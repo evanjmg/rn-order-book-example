@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { SPACE } from "src/styles/spacers.styles";
+import { CONTENT_PADDING, SPACE } from "src/styles/spacers.styles";
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     paddingVertical: SPACE,
-    paddingHorizontal: SPACE * 6,
+    paddingHorizontal: CONTENT_PADDING,
     justifyContent: 'space-between',
     zIndex: 2,
   },

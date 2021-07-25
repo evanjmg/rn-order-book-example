@@ -4,4 +4,7 @@ export const colors = {
   ASK: '#fc6839',
   BACKGROUND: '#070f15',
   WHITE: '#ffffff',
+  // design
+  PRIMARY: '#5739dd',
+  NEGATIVE: '#bc1a13',
 }

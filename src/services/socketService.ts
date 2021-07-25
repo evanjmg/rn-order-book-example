@@ -8,12 +8,16 @@ export const BOOK_FEED = 'book_ui_1'
 export const BUFFER_TIME = 2000
 export const cryptoFacilitiesSocket = webSocket(CRYPTO_FACILITIES_SOCKET_URL)
 
-export const sendSubscribeMessage = (product_ids: string[]) =>
+export const sendSubscribeMessage = (
+  product_ids: string[],
+  event: string = 'subscribe'
+) =>
   cryptoFacilitiesSocket.next({
     product_ids,
-    event: 'subscribe',
+    event,
     feed: BOOK_FEED,
   })
+export const disconnect = () => cryptoFacilitiesSocket.complete()
 
 export const isBookFeed = (res: unknown): boolean => {
   if (typeof res !== 'object' || res === null) {

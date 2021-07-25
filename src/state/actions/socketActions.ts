@@ -5,3 +5,7 @@ export enum SocketActionType {
 export const connectSocket = () => ({
   type: SocketActionType.connect,
 })
+
+export const disconnectSocket = () => ({
+  type: SocketActionType.disconnect,
+})

@@ -8,6 +8,12 @@ import { SectionType } from 'src/enums/SectionType'
 
 export const getOrdersState = (state: AppRootState) => state.orders
 
+export const getErrorState = createSelector(
+  getOrdersState,
+  ({ hasError }) => hasError
+)
+export const getFeed = createSelector(getOrdersState, ({ feed }) => feed)
+
 const DEFAULT_FORMAT = '0,0'
 const DEFAULT_PRICE_FORMAT = '0,0.00'
 const PERCENTAGE_FORMAT = '0.00%'
@@ -26,6 +32,7 @@ const getSide = (
     willTakeLastItems && length > SLICE_AMOUNT
       ? sortedKeys.slice(length - SLICE_AMOUNT, length)
       : sortedKeys.slice(0, SLICE_AMOUNT)
+
   return filtered.map((key) => {
     const size = side[key]
     const price = parseFloat(key)
