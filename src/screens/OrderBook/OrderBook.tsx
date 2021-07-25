@@ -11,7 +11,7 @@ export const OrderBook = () => {
     return (
       <View style={styles.container}>
           <View style={{ flex: 1, paddingBottom: bottom, paddingTop: top }}>
-            <View style={{ flex: 0.1 }}>
+            <View style={{ flex: 0.07 }}>
               <HeaderContainer />
             </View>
             <View style={{ flex: 0.8 }}>

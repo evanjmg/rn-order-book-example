@@ -6,8 +6,6 @@ import { BookSection } from 'src/models/BookSection'
 import { BookItem } from '../BookItem/BookItem'
 import { styles } from './Book.styles'
 import { SpreadCell } from '../SpreadCell/SpreadCell'
-import { SPACE_2, TOP_HEADER_HEIGHT } from 'src/styles/spacers.styles'
-import { FooterContainer } from 'src/containers/FooterContainer'
 
 export interface BookProps {
   sections: BookSection[]
@@ -28,7 +26,6 @@ export const Book: FunctionComponent<BookProps> = ({ sections }) => {
             <BookItem type={key} data={item as BookItemCell} />
           )
         }
-        contentContainerStyle={{ paddingBottom: TOP_HEADER_HEIGHT + SPACE_2 }}
         sections={sections}
       />
     </>

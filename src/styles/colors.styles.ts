@@ -7,4 +7,5 @@ export const colors = {
   // design
   PRIMARY: '#5739dd',
   NEGATIVE: '#bc1a13',
+  NEUTRAL_1: '#303947',
 }

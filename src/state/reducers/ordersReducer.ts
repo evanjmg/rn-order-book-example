@@ -1,15 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
-  UPDATE_RECEIVED,
-  INITIALIZE_ORDERS,
-  ORDERS_PARENT_KEY,
-} from '../actions/orderActions'
 import { Order, OrderUpdateResponse } from 'src/models/OrderUpdateResponse'
 import { OrderSide } from 'src/models/OrderSide'
 import { mergeData } from './utils/orderReducerUtils'
 import { MarketsEnum } from 'src/enums/MarketsEnum'
 
-const DEFAULT_GROUP = 0.5
+export const DEFAULT_GROUP = 0.5
 
 export interface OrdersState {
   group: number
@@ -35,6 +30,7 @@ export const ordersSlice = createSlice({
   initialState: DEFAULT_STATE,
   reducers: {
     toggleInitialize: (state) => state,
+    selectGroup: (state, { payload: group }) => ({ ...state, group }),
     initialize: (_, { payload: feed }: PayloadAction<MarketsEnum[]>) => {
       return { ...DEFAULT_STATE, feed, hasError: false }
     },
@@ -51,8 +47,8 @@ export const ordersSlice = createSlice({
         largestAskOrder: previousAskOrder,
         largestBidOrder: previousBidOrder,
       } = state
-      let bids = {}
-      let asks = {}
+      let bids = previousBids
+      let asks = previousAsks
       let largestAskOrder = previousAskOrder
       let largestBidOrder = previousBidOrder
 
@@ -80,6 +76,6 @@ export const {
   updateReceived,
   invalidate,
   toggleInitialize,
-  killSocket,
+  selectGroup,
 } = ordersSlice.actions
 export const ordersReducer = ordersSlice.reducer

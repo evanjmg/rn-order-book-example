@@ -3,8 +3,9 @@ import numeral from 'numeral'
 import { BookItemCell } from 'src/models/BookItemCell'
 import { OrderSide } from 'src/models/OrderSide'
 import { Order } from 'src/models/OrderUpdateResponse'
-import { AppRootState } from '../store'
 import { SectionType } from 'src/enums/SectionType'
+import { AppRootState } from '../store'
+import { DEFAULT_GROUP } from '../reducers/ordersReducer'
 
 export const getOrdersState = (state: AppRootState) => state.orders
 
@@ -13,47 +14,96 @@ export const getErrorState = createSelector(
   ({ hasError }) => hasError
 )
 export const getFeed = createSelector(getOrdersState, ({ feed }) => feed)
+export const getGroup = createSelector(getOrdersState, ({ group }) => group)
 
 const DEFAULT_FORMAT = '0,0'
 const DEFAULT_PRICE_FORMAT = '0,0.00'
 const PERCENTAGE_FORMAT = '0.00%'
 const SLICE_AMOUNT = 12
 
+interface GroupResponse {
+  groupedKeys: { displayKey: number; key: string }[]
+  strippedKeyMap: { [key: string]: string[] }
+}
+const roundKey = (key: string, group: number) => {
+  const currentKey = parseFloat(key)
+  return Math.round(currentKey / group) * group
+}
+
+const groupKeys = (group: number, keys: string[]): GroupResponse => {
+  if (group === DEFAULT_GROUP) {
+    return {
+      groupedKeys: keys.map((key) => ({ key, displayKey: parseFloat(key) })),
+      strippedKeyMap: {},
+    }
+  }
+  return keys.reduce(
+    (acc, key) => {
+      const lastGrouped = acc.groupedKeys[acc.groupedKeys.length - 1]
+      const rounded = roundKey(key, group)
+
+      if (lastGrouped && rounded === lastGrouped.displayKey) {
+        // create association between groupedKey and stripped one
+        acc.strippedKeyMap[lastGrouped.key] = [
+          ...(acc.strippedKeyMap[key] || []),
+          key,
+        ]
+      } else {
+        acc.groupedKeys.push({ key, displayKey: roundKey(key, group) })
+      }
+
+      return acc
+    },
+    { groupedKeys: [], strippedKeyMap: {} } as GroupResponse
+  )
+}
+
 const getSide = (
   side: OrderSide,
   largestOrder: Order | null,
-  willTakeLastItems: boolean
+  willTakeLastItems: boolean,
+  group: number
 ): BookItemCell[] => {
   const sortedKeys = Object.keys(side).sort(
     (a, b) => parseFloat(b) - parseFloat(a)
   )
   const length = sortedKeys.length
+  const { groupedKeys, strippedKeyMap } = groupKeys(group, sortedKeys)
   const filtered =
     willTakeLastItems && length > SLICE_AMOUNT
-      ? sortedKeys.slice(length - SLICE_AMOUNT, length)
-      : sortedKeys.slice(0, SLICE_AMOUNT)
+      ? groupedKeys.slice(length - SLICE_AMOUNT, length)
+      : groupedKeys.slice(0, SLICE_AMOUNT)
 
-  return filtered.map((key) => {
+  return filtered.map(({ key, displayKey }) => {
     const size = side[key]
-    const price = parseFloat(key)
-    const priceString = numeral(price).format(DEFAULT_PRICE_FORMAT)
+    const otherSizes = (strippedKeyMap[key] || []).map((val) => side[val])
+    const combinedSize = [size, ...otherSizes].reduce(
+      (acc, val) => acc + val,
+      0
+    )
+
+    const priceString = numeral(displayKey).format(DEFAULT_PRICE_FORMAT)
     return {
-      price,
+      price: displayKey,
       priceString,
       key: priceString,
-      sizeString: numeral(size).format(DEFAULT_FORMAT),
-      totalString: numeral(price * size).format(DEFAULT_FORMAT),
-      relativeSize: largestOrder ? size / largestOrder[1] : 0,
+      sizeString: numeral(combinedSize).format(DEFAULT_FORMAT),
+      totalString: numeral(displayKey * combinedSize).format(DEFAULT_FORMAT),
+      relativeSize: largestOrder ? combinedSize / largestOrder[1] : 0,
     }
   })
 }
 
-const getAsks = createSelector(getOrdersState, ({ asks, largestAskOrder }) =>
-  getSide(asks, largestAskOrder, true)
+const getAsks = createSelector(
+  getOrdersState,
+  ({ asks, largestAskOrder, group }) =>
+    getSide(asks, largestAskOrder, true, group)
 )
 
-const getBids = createSelector(getOrdersState, ({ bids, largestBidOrder }) =>
-  getSide(bids, largestBidOrder, false)
+const getBids = createSelector(
+  getOrdersState,
+  ({ bids, largestBidOrder, group }) =>
+    getSide(bids, largestBidOrder, false, group)
 )
 
 export const getOrderBook = createSelector(getBids, getAsks, (bids, asks) => {

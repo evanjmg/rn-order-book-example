@@ -1,13 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Header } from 'src/components/Header/Header'
-import { selectGroup } from 'src/state/actions/groupActions'
+import { selectGroup } from 'src/state/reducers/ordersReducer'
+import { getGroup } from 'src/state/selectors/ordersSelectors'
 
 export const HeaderContainer = () => {
-  const toggle = useSelector(() => {})
+  const group = useSelector(getGroup)
   const dispatch = useDispatch();
 
-  return <Header onValueChange={(value) => {
+  return <Header value={group} onValueChange={(value) => {
     dispatch(selectGroup(value))
   }}></Header>
 }
