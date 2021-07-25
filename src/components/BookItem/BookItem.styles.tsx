@@ -8,12 +8,11 @@ export const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     paddingVertical: SPACE,
+    flex: 1,
+    display: 'flex',
     paddingHorizontal: CONTENT_PADDING,
     justifyContent: 'space-between',
     zIndex: 2,
-  },
-  text: {
-
   },
   bar: {
     height: '100%',

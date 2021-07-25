@@ -14,7 +14,7 @@ import {
   SocketActionType,
 } from '../actions/socketActions'
 import { AppRootState } from '../store'
-import { disconnect, sendSubscribeMessage } from 'src/services/socketService'
+import { disconnect, sendSubscribeMessage } from '../../services/socketService'
 import { OrderUpdateResponse } from 'src/models/OrderUpdateResponse'
 import { MarketsEnum } from 'src/enums/MarketsEnum'
 import { listenToBookFeed$ } from 'src/services/ordersService'

@@ -15,7 +15,7 @@ export interface OrdersState {
   largestAskOrder: Order | null
   hasError: boolean
 }
-const DEFAULT_STATE: OrdersState = {
+export const DEFAULT_STATE: OrdersState = {
   hasError: false,
   group: DEFAULT_GROUP,
   feed: [MarketsEnum.btc],

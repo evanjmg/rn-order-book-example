@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { Button, View } from 'react-native'
+import { View } from 'react-native'
 import { colors } from 'src/styles/colors.styles'
 import { OButton } from '../OButton/OButton'
 import { styles } from './Footer.styles'

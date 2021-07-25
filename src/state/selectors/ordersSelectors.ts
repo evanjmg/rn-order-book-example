@@ -6,6 +6,7 @@ import { Order } from 'src/models/OrderUpdateResponse'
 import { SectionType } from 'src/enums/SectionType'
 import { AppRootState } from '../store'
 import { DEFAULT_GROUP } from '../reducers/ordersReducer'
+import { isWeb } from 'src/styles/mediaHelpers'
 
 export const getOrdersState = (state: AppRootState) => state.orders
 
@@ -19,7 +20,7 @@ export const getGroup = createSelector(getOrdersState, ({ group }) => group)
 const DEFAULT_FORMAT = '0,0'
 const DEFAULT_PRICE_FORMAT = '0,0.00'
 const PERCENTAGE_FORMAT = '0.00%'
-const SLICE_AMOUNT = 12
+const SLICE_AMOUNT = isWeb ? 18 : 12
 
 interface GroupResponse {
   groupedKeys: { displayKey: number; key: string }[]
@@ -119,4 +120,8 @@ export const getOrderBook = createSelector(getBids, getAsks, (bids, asks) => {
     { data: [{ priceString: spread, key: spread }], key: SectionType.spread },
     { data: bids, key: SectionType.bids },
   ]
+})
+
+export const getSpread = createSelector(getOrderBook, (book) => {
+  return book.find(({ key }) => key === SectionType.spread)?.data[0].priceString
 })

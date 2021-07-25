@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { colors } from "src/styles/colors.styles";
-import { styles as bookItemStyles } from '../BookItem/BookItem.styles'
+import { CONTENT_PADDING, SPACE } from "src/styles/spacers.styles";
 
 export const styles = StyleSheet.create({
   headTitle: {
@@ -8,5 +8,14 @@ export const styles = StyleSheet.create({
     opacity: 0.4,
     textTransform: 'uppercase',
   },
-  head: bookItemStyles.content,
+  head: {
+    flexDirection: 'row',
+    paddingVertical: SPACE,
+    flex: 1,
+    display: 'flex',
+    backgroundColor: colors.BACKGROUND,
+    paddingHorizontal: CONTENT_PADDING,
+    justifyContent: 'space-between',
+    zIndex: 2,
+  },
 })

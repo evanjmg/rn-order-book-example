@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BookContainer } from 'src/containers/BookContainer'
 import { FooterContainer } from 'src/containers/FooterContainer'
 import { HeaderContainer } from 'src/containers/HeaderContainer'
