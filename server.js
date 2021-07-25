@@ -1,11 +1,11 @@
-var path = require('path')
-var express = require('express')
+const path = require('path')
+const express = require('express')
+const port = process.env.PORT || 3000
+const app = express()
 
-var app = express()
-
-var staticPath = path.join(__dirname, '/web-build')
+const staticPath = path.join(__dirname, '/web-build')
 app.use(express.static(staticPath))
 
-app.listen(3000, function () {
-  console.log('listening')
+app.listen(port, function () {
+  console.log(`listening to port: ${port}`)
 })
