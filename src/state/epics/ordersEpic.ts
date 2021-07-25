@@ -4,6 +4,7 @@ import {
   catchError,
   ignoreElements,
   map,
+  mapTo,
   switchMap,
   tap,
   withLatestFrom,
@@ -58,7 +59,7 @@ export const listenToDisconnect$: Epic<
   actions$.pipe(
     ofType(SocketActionType.disconnect),
     tap({ next: () => disconnect() }),
-    ignoreElements()
+    mapTo(invalidate())
   )
 
 export const initializeOrders$: Epic<

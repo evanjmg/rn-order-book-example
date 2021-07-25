@@ -16,7 +16,7 @@ export const HeaderContainer = () => {
       spread={isHorizontal ? spread : null}
       value={group}
       onValueChange={(value) => {
-        dispatch(selectGroup(value))
+        dispatch(selectGroup(parseFloat(value)))
       }}
     ></Header>
   )

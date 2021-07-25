@@ -6,21 +6,22 @@ export const SUPPORTED_GROUPS = [0.5, 1, 2.5]
 
 export interface GroupSelectProps {
   value: number
-  onValueChange: (value: number) => void
+  onValueChange: (value: string) => void
 }
 export const GroupSelect: FunctionComponent<GroupSelectProps> = ({
   onValueChange,
   value,
 }) => {
+  console.log(value)
   return (
     <RNPickerSelect
       onValueChange={onValueChange}
-      value={value}
+      value={String(value)}
       style={styles}
       placeholder={{}}
       items={SUPPORTED_GROUPS.map((item) => ({
         label: `Group ${item}`,
-        value: item,
+        value: String(item),
       }))}
     />
   )

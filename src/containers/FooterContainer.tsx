@@ -8,6 +8,7 @@ import {
 } from 'src/state/actions/socketActions'
 import { toggleInitialize } from 'src/state/reducers/ordersReducer'
 import { getErrorState } from 'src/state/selectors/ordersSelectors'
+import { isWeb } from 'src/styles/mediaHelpers'
 
 export const FooterContainer = () => {
   const hasError = useSelector(getErrorState)
@@ -21,9 +22,9 @@ export const FooterContainer = () => {
       }}
       onToggleFeed={() => {
         if (hasError) {
-          Alert.alert(
+          const message = 'Please press reconnect in order to continue'
+          isWeb ? alert(message) : Alert.alert(
             'Connection Failure',
-            'Please press reconnect in order to continue'
           )
         } else {
           dispatch(toggleInitialize())

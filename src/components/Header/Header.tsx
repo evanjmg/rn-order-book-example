@@ -7,7 +7,7 @@ import { SpreadCell } from '../SpreadCell/SpreadCell'
 export interface HeaderProps {
   value: number
   spread: string | null | undefined
-  onValueChange: (value: number) => void
+  onValueChange: (value: string) => void
 }
 export const Header: FunctionComponent<HeaderProps> = ({
   value,
